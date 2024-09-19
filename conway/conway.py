@@ -50,7 +50,7 @@ def addGosperGliderGun(i, j, grid):
 
     grid[i:i+11, j:j+38] = gun
 
-def update(frameNum, img, grid, N):
+def update(frameNum, img, grid, N, ax):
     # copy grid since we require 8 neighbors for calculation
     # and we go line by line 
     newGrid = grid.copy()
@@ -72,6 +72,7 @@ def update(frameNum, img, grid, N):
                     newGrid[i, j] = 255
     # update data
     img.set_data(newGrid)
+    ax.set_title(f'Frame number {frameNum}')
     grid[:] = newGrid[:]
     # need to return a tuple here, since this callback 
     # function needs to return an interable.
@@ -88,6 +89,7 @@ def main():
     parser.add_argument('--interval', dest='interval', required=False)
     parser.add_argument('--glider', action='store_true', required=False)
     parser.add_argument('--gosper', action='store_true', required=False)
+    parser.add_argument('--random', action='store_true', default=False, required=False)
     args = parser.parse_args()
     
     # set grid size
@@ -99,13 +101,15 @@ def main():
         updateInterval = int(args.interval)
 
     # declare grid
-    grid = np.array([])
-    # check if "glider" demo flag is specified
-    if args.glider:
+    if args.random:
+        grid = randomGrid(N)
+    else:
         grid = np.zeros(N*N).reshape(N, N)
+    
+    # check if "glider" demo flag is specified
+    if args.glider:    
         addGlider(1, 1, grid)
     elif args.gosper:
-        grid = np.zeros(N*N).reshape(N, N)
         addGosperGliderGun(10, 10, grid)
     else: 
         # set N if specified and valid
@@ -117,9 +121,10 @@ def main():
     # set up animation
     fig, ax = plt.subplots()
     img = ax.imshow(grid, interpolation='nearest')
-    ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ),
-                                  frames = 10,
-                                  interval=updateInterval)
+    ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ax),
+                                  frames = 5000,
+                                  interval=updateInterval,
+                                  repeat=False)
 
     plt.show()
 
