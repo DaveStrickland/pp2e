@@ -18,7 +18,7 @@ from PIL import Image
 def loadTexture(filename):
     """load OpenGL 2D texture from given image file"""
     img = Image.open(filename) 
-    imgData = numpy.array(list(img.getdata()), np.int8)
+    imgData = numpy.array(list(img.getdata()), np.uint8)
     texture = glGenTextures(1)
     glPixelStorei(GL_UNPACK_ALIGNMENT,1)
     glBindTexture(GL_TEXTURE_2D, texture)

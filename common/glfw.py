@@ -49,7 +49,7 @@ if 'GLFW_LIBRARY' in os.environ:
     else:
         print('path not exist')
 else:
-    _glfw_file = '/Users/mahesh/glfw-3.3.3.bin.MACOS/lib-universal/libglfw.3.dylib'
+    _glfw_file = '/opt/local/lib/libglfw.3.dylib'
     print('Not in os. Using hardcoded:')
     print(_glfw_file)
     #print(os.environ)
